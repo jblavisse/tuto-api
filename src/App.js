@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+export default class App extends Component {
+  state= {
+    comment: {}
+  }
+
+  getComment = () => {
+    axios.get('https://jsonplaceholder.typicode.com/comments/4')
+    .then(response => {
+      console.log(response.data);
+      this.setState({
+        comment: response.data
+      })
+    })
+  }
+
+  render() {
+    return (
+      <div className="app">
+        <button onClick={this.getComment}>Récupérer mon commentaire</button>
+
+        <h2>Nom de la personne: {this.state.comment.name}</h2>
+        <h3>Email de la personne: {this.state.comment.email} </h3>
+        <p>Message:<br/>
+            {this.state.comment.body}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    )
+  }
 }
-
-export default App;
